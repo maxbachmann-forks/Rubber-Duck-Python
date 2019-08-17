@@ -58,6 +58,7 @@ from .math import Math
 from .minecraft import Minecraft
 from .translate import Translate
 from .wikipedia import Wikipedia
+from .xkcd import Xkcd
 
 # Commands will auto alphabetize
 all_commands = [
@@ -76,5 +77,6 @@ all_commands = [
     RemoveClass(),
     Translate(),
     Wikipedia(),
+    Xkcd(),
 ]
 all_commands.sort()
