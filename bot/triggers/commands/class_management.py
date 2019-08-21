@@ -54,6 +54,11 @@ class AddClass(Command, ReactionTrigger):
     needsContent = True
 
     async def execute_command(self, client, msg, content):
+        for word in client.config["add_skip_words"]:
+            if content.split()[0].lower() == word.lower():
+                content = " ".join(content.split()[1:])
+                break
+
         for role in client.config["general_roles"].keys():
             if content.lower() == role.lower():
                 await self.add_role(
