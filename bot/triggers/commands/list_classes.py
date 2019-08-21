@@ -54,37 +54,50 @@ class ListClasses(Command):
                 client.messages["dept_not_found"].format(str(content[:4]).upper()),
             )
         else:
-            class_str = ""
-            for class_name in sorted(class_list):
-                class_str += class_name + "\n"
-
-            embed = discord.Embed(description=class_str, color=0xDCC308)
-
             if msg.channel.type is not discord.ChannelType.private:
                 await msg.channel.send("DMed!")
 
-            await msg.author.send(
-                client.messages["class_list_prelude"].format(str(content[:4]).upper()),
-                embed=embed,
+            class_str = ""
+            prelude = client.messages["class_list_prelude"].format(
+                str(content[:4]).upper()
             )
+            for class_name in sorted(class_list):
+                class_str += class_name + "\n"
+                if len(class_str) + len(prelude) >= 2000:
+                    embed = discord.Embed(description=class_str, color=0xDCC308)
+
+                    await msg.author.send(prelude, embed=embed)
+                    class_str = ""
+
+            if len(class_str) != 0:
+                embed = discord.Embed(description=class_str, color=0xDCC308)
+
+                await msg.author.send(
+                    client.messages["class_list_prelude"].format(
+                        str(content[:4]).upper()
+                    ),
+                    embed=embed,
+                )
+                class_str = ""
 
     async def general_listing(self, client, msg):
         embed = discord.Embed(color=0xDCC308)
         roles_list = ""
         for role_name in client.config["general_roles"].keys():
             roles_list += role_name + "\n"
-        embed.add_field(name="General Roles", value=roles_list)
+        embed.add_field(name="General Roles: `!add ROLE`", value=roles_list)
 
         roles_list = ""
         for role_name in client.config["major_roles"].keys():
             roles_list += role_name + "\n"
-        embed.add_field(name="Major Roles", value=roles_list)
+        embed.add_field(name="Major Roles: `!add MAJOR`", value=roles_list)
 
         for school in client.config["depts"].keys():
             school_msg = ""
             for dept in client.config["depts"][school]:
                 school_msg += dept + "\n"
-            embed.add_field(name=school, value=school_msg)
+            school_text = school + ": `!list XXXX`"
+            embed.add_field(name=school_text, value=school_msg)
 
         if msg.channel.type is not discord.ChannelType.private:
             await msg.channel.send("DMed!")

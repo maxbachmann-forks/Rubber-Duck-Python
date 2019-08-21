@@ -7,6 +7,8 @@ import sqlite3
 
 from .triggers import msg_triggers, new_member_triggers, reaction_triggers
 
+from .triggers.commands import invalid_command
+
 from .triggers.quack import quack
 from .triggers.emoji_mode import invalid_emoji_message
 
@@ -60,7 +62,8 @@ class DuckClient(discord.Client):
                 replied = True
 
         if not replied:
-            await quack(self, msg)
+            if not await invalid_command(self, msg):
+                await quack(self, msg)
 
     async def on_member_join(self, member):
         for trigger in new_member_triggers:
