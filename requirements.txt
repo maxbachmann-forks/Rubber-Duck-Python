@@ -3,6 +3,7 @@ emoji
 fuzzywuzzy
 googletrans>=2.4.0
 Pillow>=6.1.0
+python-Levenshtein
 requests>=2.22.0
 Wikipedia-API
 wolframalpha
