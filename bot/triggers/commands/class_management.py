@@ -59,6 +59,9 @@ class AddClass(Command, ReactionTrigger):
                 content = " ".join(content.split()[1:]).strip()
                 break
         if not content:
+            await utils.delay_send(
+                msg.channel, client.messages["invalid_class_add_format"]
+            )
             return
 
         for role in client.config["general_roles"].keys():
