@@ -97,7 +97,7 @@ class AddClass(Command, ReactionTrigger):
         for role in client.config["general_roles"].keys():
             if content.lower() == role.lower():
                 await add_role(client, msg, client.config["general_roles"][role], role)
-                if content == "All-Seer":
+                if content.lower() == "all-seer".lower():
                     await remove_role(
                         client, msg, client.config["NON_ALL_SEER_ID"], "Not All-Seer"
                     )
@@ -237,7 +237,7 @@ class RemoveClass(Command, ReactionTrigger):
                 await remove_role(
                     client, msg, client.config["general_roles"][role], role
                 )
-                if content == "All-Seer":
+                if content.lower() == "all-seer".lower():
                     await add_role(
                         client, msg, client.config["NON_ALL_SEER_ID"], "Not All-Seer"
                     )
