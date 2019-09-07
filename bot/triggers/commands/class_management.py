@@ -233,13 +233,11 @@ class AddClass(Command, ReactionTrigger):
             # check if this user and channel is in the cache
             for past_user, past_channel in self.recent_class_cache:
                 if past_user == user.id and past_channel == channel.id:
-                    print(channel.id)
                     return
 
             self.recent_class_cache.append((user.id, channel.id))
             if len(self.recent_class_cache) > client.config["recent_class_cache_size"]:
                 self.recent_class_cache.pop(0)
-            print(self.recent_class_cache)
 
             await utils.delay_send(
                 channel,
